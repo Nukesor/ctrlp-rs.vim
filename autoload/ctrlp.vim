@@ -72,4 +72,4 @@ function! ctrlp#shutdown()
     call rpcnotify(s:job_id, 'shutdown')
 endfunction
 
-noremap <silent> <C-P> :ctrlp#search <CR>
+noremap <silent> <C-P> :call ctrlp#search <CR>
