@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::sync::mpsc;
 
-use log::{info, error};
+use log::{error, info};
 use neovim_lib::neovim::Neovim;
 use neovim_lib::session::Session;
 use simplelog::{Config, Level, LevelFilter, WriteLogger};
@@ -13,7 +13,6 @@ pub mod handler;
 use crate::event::Event;
 use crate::event_handlers::search::search;
 use crate::handler::NeovimHandler;
-
 
 fn main() {
     use std::process;
@@ -32,21 +31,23 @@ fn main() {
     };
 }
 
-
 fn init_logging() -> Result<(), Box<Error>> {
     use std::env;
     use std::fs::File;
 
-    let _log_level_filter =
-        match env::var("LOG_LEVEL").unwrap_or(String::from("trace")).to_lowercase().as_ref() {
-            "debug" => LevelFilter::Debug,
-            "error" => LevelFilter::Error,
-            "info" => LevelFilter::Info,
-            "off" => LevelFilter::Off,
-            "trace" => LevelFilter::Trace,
-            "warn" => LevelFilter::Warn,
-            _ => LevelFilter::Off,
-        };
+    let _log_level_filter = match env::var("LOG_LEVEL")
+        .unwrap_or(String::from("trace"))
+        .to_lowercase()
+        .as_ref()
+    {
+        "debug" => LevelFilter::Debug,
+        "error" => LevelFilter::Error,
+        "info" => LevelFilter::Info,
+        "off" => LevelFilter::Off,
+        "trace" => LevelFilter::Trace,
+        "warn" => LevelFilter::Warn,
+        _ => LevelFilter::Off,
+    };
 
     let log_level_filter = LevelFilter::Debug;
 
@@ -55,7 +56,7 @@ fn init_logging() -> Result<(), Box<Error>> {
         level: Some(Level::Error),
         target: Some(Level::Error),
         location: Some(Level::Error),
-        time_format:  None,
+        time_format: None,
     };
 
     let filepath = "/home/nuke/ctrlp.log";
@@ -66,7 +67,6 @@ fn init_logging() -> Result<(), Box<Error>> {
 
     Ok(())
 }
-
 
 fn start_program() -> Result<(), Box<Error>> {
     info!("Connection to neovim");
@@ -79,7 +79,6 @@ fn start_program() -> Result<(), Box<Error>> {
 
     Ok(())
 }
-
 
 fn start_event_loop(receiver: mpsc::Receiver<Event>, mut nvim: Neovim) {
     info!("Starting event loop");
@@ -95,7 +94,7 @@ fn start_event_loop(receiver: mpsc::Receiver<Event>, mut nvim: Neovim) {
             Ok(Event::Search) => {
                 search(Event::Shutdown, &nvim);
             }
-            _ => info!("unhandled event")
+            _ => info!("unhandled event"),
         }
     }
 }

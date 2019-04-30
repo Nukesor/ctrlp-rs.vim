@@ -1,14 +1,12 @@
-use std::sync::mpsc;
-use log::{info, error};
+use log::{error, info};
 use neovim_lib::{Handler, RequestHandler, Value};
+use std::sync::mpsc;
 
 use crate::event::Event;
 
 pub struct NeovimHandler(pub mpsc::Sender<Event>);
 
-impl NeovimHandler {
-}
-
+impl NeovimHandler {}
 
 impl RequestHandler for NeovimHandler {
     /// We don't handle requests yet.
@@ -16,7 +14,6 @@ impl RequestHandler for NeovimHandler {
         Err(Value::from("Not supported"))
     }
 }
-
 
 impl Handler for NeovimHandler {
     fn handle_notify(&mut self, name: &str, args: Vec<Value>) {
