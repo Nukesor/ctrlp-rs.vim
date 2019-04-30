@@ -1,19 +1,18 @@
-pub mod handler;
-pub mod event;
-use log::{info, error};
-
-use handler::NeovimHandler;
-use event::Event;
-
-
 use std::error::Error;
 use std::sync::mpsc;
 
+use log::{info, error};
 use neovim_lib::neovim::Neovim;
-use neovim_lib::neovim_api::NeovimApi;
 use neovim_lib::session::Session;
-
 use simplelog::{Config, Level, LevelFilter, WriteLogger};
+
+pub mod event;
+pub mod event_handlers;
+pub mod handler;
+
+use crate::event::Event;
+use crate::event_handlers::search::search;
+use crate::handler::NeovimHandler;
 
 
 fn main() {
@@ -94,7 +93,7 @@ fn start_event_loop(receiver: mpsc::Receiver<Event>, mut nvim: Neovim) {
                 break;
             }
             Ok(Event::Search) => {
-                info!("search");
+                search(Event::Shutdown, &nvim);
             }
             _ => info!("unhandled event")
         }
