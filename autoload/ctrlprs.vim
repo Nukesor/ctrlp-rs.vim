@@ -5,7 +5,7 @@ if ! exists('s:job_id')
     let s:job_id = 0
 endif
 
-function! ctrlp#init()
+function! ctrlprs#init()
     let result = s:startup()
 
     if 0 == result
@@ -51,7 +51,7 @@ endfunction
 
 " Error
 function! s:display_error(id, data, event) dict
-    echom 'ctrlp error: ' . join(a:data, "\n")
+    echom 'ctrlp error: ' . a:event . join(a:data, "\n")
 endfunction
 
 " Configuration
@@ -64,12 +64,12 @@ function! s:configure(job_id)
     augroup END
 endfunction
 
-function! ctrlp#search()
+function! ctrlprs#search()
     call rpcnotify(s:job_id, 'search')
 endfunction
 
-function! ctrlp#shutdown()
+function! ctrlprs#shutdown()
     call rpcnotify(s:job_id, 'shutdown')
 endfunction
 
-noremap <silent> <C-P> :call ctrlp#search <CR>
+noremap <silent> <C-[> :call ctrlprs#search() <CR>
