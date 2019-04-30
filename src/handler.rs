@@ -32,6 +32,10 @@ impl Handler for NeovimHandler {
                     error!("{}", reason);
                 }
             }
+            "nvim_error_event" => {
+                error!("Got nvim Error:");
+                error!("{:?}", args);
+            }
             _ => {
                 error!("Unknown event {}", name);
             }
