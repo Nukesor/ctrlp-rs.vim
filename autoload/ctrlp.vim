@@ -9,15 +9,13 @@ function! ctrlp#init()
     let result = s:startup()
 
     if 0 == result
-        echoerr s:bin
-        echoerr result
         echoerr "ctrlp-rs: Failed to start process"
     elseif -1 == result
         echoerr "ctrlp-rs: Binary not executable"
     else
         let s:job_id = result
-        call s:configure(result)
     endif
+    call s:configure(result)
 endfunction
 
 function! s:startup()
@@ -70,6 +68,8 @@ function! ctrlp#search()
     call rpcnotify(s:job_id, 'search')
 endfunction
 
-noremap <silent> <C-P> :ctrlp#search <CR>
+function! ctrlp#shutdown()
+    call rpcnotify(s:job_id, 'shutdown')
+endfunction
 
-call ctrlp#init()
+noremap <silent> <C-P> :ctrlp#search <CR>

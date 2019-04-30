@@ -85,13 +85,12 @@ fn start_program() -> Result<(), Box<Error>> {
 fn start_event_loop(receiver: mpsc::Receiver<Event>, mut nvim: Neovim) {
     info!("Starting event loop");
     loop {
+        info!("Waiting");
         let payload = receiver.recv();
-        println!("{:?}", payload);
+        println!("Received Payload: {:?}", payload);
         match payload {
             Ok(Event::Shutdown) => {
-                nvim.command("echom \"ctrlp shutdown\"").unwrap();
-                nvim.command("vsplit").unwrap();
-                info!("Shuting down");
+                info!("Shutting down");
                 break;
             }
             Ok(Event::Search) => {
