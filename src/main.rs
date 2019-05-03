@@ -59,7 +59,7 @@ fn init_logging() -> Result<(), Box<Error>> {
         time_format: None,
     };
 
-    let filepath = "/home/nuke/ctrlp.log";
+    let filepath = "./ctrlp.log";
 
     let log_file = File::create(filepath)?;
 
@@ -85,7 +85,6 @@ fn start_event_loop(receiver: mpsc::Receiver<Event>, mut nvim: Neovim) {
     loop {
         info!("Waiting");
         let payload = receiver.recv();
-        println!("Received Payload: {:?}", payload);
         match payload {
             Ok(Event::Shutdown) => {
                 info!("Shutting down");
